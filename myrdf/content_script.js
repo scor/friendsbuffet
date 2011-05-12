@@ -8,7 +8,6 @@ chrome.extension.sendRequest({msg: "check_opts"}, function(response) {
 
 function callback (options) {
 
-
   var store = new LinkedData.API.data.Store();
   var parser = new LinkedData.API.data.Parser(store);
   parser.parse();

@@ -45,6 +45,7 @@ function main() {
     var rdfList = chrome.extension.getBackgroundPage().rdfsPerTab[tab.id];
     if (rdfList.length > 0) {
 //console.log(rdfList);
+
       var content = document.getElementById('content');
       var heading = document.getElementById('heading');
       var d = document.getElementById('heading');
@@ -59,8 +60,24 @@ function main() {
 		img_link = rdfaLink(rdfList[i].href);
         img_link.appendChild(img);
 
-        var p_name = document.createElement('p')
+        var p_name = document.createElement('p');
 		p_name.appendChild(document.createTextNode(rdfList[i].name));
+
+        //'<button type="button" id="save" onclick="save()">Save</button>';
+
+//         var a_add = document.createElement('a');
+//         a_add.href = '';
+//         a_add.addEventListener("click", onClickAdd);
+// 		a_add.appendChild(document.createTextNode('Add'));
+
+        var a_add = document.createElement('button');
+        a_add.type = 'button';
+        a_add.id = 'save';
+        a_add.name = rdfList[i].name;
+        a_add.photo = rdfList[i].photo;
+        a_add.uri = rdfList[i].uri;
+        a_add.addEventListener("click", onClickAdd);
+		a_add.appendChild(document.createTextNode('Add'));
 
         var tr = document.createElement('tr');
         tr.className = "rdfList";
@@ -70,6 +87,7 @@ function main() {
         td.appendChild(img_link);
         var td2 = document.createElement('td');
         td2.appendChild(p_name);
+        td2.appendChild(a_add);
         tr.appendChild(td);
         tr.appendChild(td2);
         rdf_list.appendChild(tr);
@@ -82,6 +100,12 @@ function main() {
 function onClick(event) {
   var a = event.currentTarget;
   viewRdf(a.href);
+}
+
+function onClickAdd(event) {
+  var data = event.currentTarget;
+  // Sends data to background.html.
+  chrome.extension.sendRequest({msg: "add", uri: data.uri, name: data.name, photo: data.photo});
 }
 
 function onClickRdfa(event) {
@@ -132,6 +156,8 @@ function viewRdfa(rdf_url) {
 <body onload="javascript:main()">
   <div id="content">
    <span id="heading" class="heading">Processing...</span>
+
   </div>
 </body>
 </html>
+

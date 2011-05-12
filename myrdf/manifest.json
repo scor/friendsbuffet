@@ -19,3 +19,4 @@
    "permissions": [ "tabs", "http://*/*", "https://*/*" ],
    "version": "1.3"
 }
+
