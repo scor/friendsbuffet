@@ -1,5 +1,32 @@
+
+//check with background about the plugin options and run the script when options are available
+chrome.extension.sendRequest({msg: "check_opts"}, function(response) {
+							 callback(response);
+							 });
+
+
+function callback (options) {
+
+
+
+
+
+		rdfs.push({"href": document.location.href, "title": "RDFa", "type": rdfa_type});
+
+
+
+  //send message to render the icon (or not)
+  if (rdfs.length > 0) {
+    // Notify the extension needs to show the RSS page action icon.
+    chrome.extension.sendRequest({msg: "rdfDetected", rdfs: rdfs});
+  }
+
+}
+
+
+
 //alert('e');
-jQuery(function() {
+//jQuery(function() {
 
 //window.localStorage['bla'] = 'hi';
 //console.log(window.localStorage);
@@ -170,6 +197,6 @@ if (store.length > 0) {
 //console.log(e.indexOf('<ht'));
 
 
-});
+//});
 
 
