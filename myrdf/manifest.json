@@ -9,7 +9,7 @@
       "128": "rdf-chrome-128.png",
       "48": "rdf-chrome-48.png"
    },
-   "name": "myRDF",
+   "name": "myRDF plus",
    "options_page": "options.html",
    "page_action": {
       "default_icon": "rdf-icon-16.gif",

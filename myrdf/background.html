@@ -16,12 +16,9 @@
       rdfsPerTab[sender.tab.id] = request.rdfs;
       chrome.pageAction.setTitle(
         { tabId: sender.tab.id,
-          title: "Click to view embeded RDF..."});
-		  
-//	  if ((request.rdfs.length == 1) && (request.rdfs[0].type== 'rdfa')) chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdfa-icon-16.gif'});
-//	  if ((request.rdfs.length == 1) && (request.rdfs[0].type== 1)) chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdfa-icon-16.gif'});
-	  
-	  if (request.rdfs.length == 1) 
+          title: "Click to view people embedded in this page..."});
+
+	  if (request.rdfs.length == 1)
 	  switch (request.rdfs[0].type)
 	  {
 		case 0:
@@ -40,7 +37,7 @@
 			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdf-icon-16.gif'});
 			break;
 	  }
-	  
+
       chrome.pageAction.show(sender.tab.id);
     }
 	if (request.msg == "check_opts") {
