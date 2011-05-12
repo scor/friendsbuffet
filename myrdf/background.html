@@ -15,11 +15,22 @@
 console.log(request);
     if (request.msg == "add") {
 
-
-window.localStorage[request.uri + '.uri'] = request.uri;
-window.localStorage[request.uri + '.name'] = request.name;
-window.localStorage[request.uri + '.photo'] = request.photo;
-console.log(window.localStorage[request.uri]);
+    for (var i = 0, length = 4; i < length; i++) {
+      if (window.localStorage[i + '.uri'] === undefined) {
+        id = i;
+        break;
+      }
+      if (window.localStorage[i + '.uri'] == request.uri) {
+        // That's our id.
+        id = i;
+        break;
+      }
+    }
+window.localStorage[id + '.uri'] = request.uri;
+window.localStorage[id + '.name'] = request.name;
+window.localStorage[id + '.photo'] = request.photo;
+console.log('Added ' + request.name + ' to your list of friends');
+//console.log(window.localStorage[request.uri]);
 
     }
     if (request.msg == "rdfDetected") {
