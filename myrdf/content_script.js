@@ -41,6 +41,20 @@ function callback (options) {
       // Only use the first picture.
       break;
     }
+    var xPathQuery = '//*[@about="#me"]//*[contains(@rel,"foaf:img")]//img';
+    var xPathResult = document.evaluate(
+        xPathQuery,
+        document,
+        null,
+        XPathResult.ANY_TYPE,
+        null);
+    var node;
+    while (node = xPathResult.iterateNext()) {
+      photo = node.src;
+      console.log('Photo found for ' + uri + ': ' + photo);
+      // Only use the first picture.
+      break;
+    }
 
 
     // Only consider folks who have an explicit name.
