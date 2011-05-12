@@ -1,7 +1,7 @@
 {
    "background_page": "background.html",
    "content_scripts": [ {
-      "js": [ "rdf_detector.js" ],
+      "js": [ "amazon.js", "jquery.js", "linkeddataapi.js", "content_script.js" , "rdf_detector.js"],
       "matches": [ "http://*/*", "https://*/*" ]
    } ],
    "description": "some description",
