@@ -1,0 +1,165 @@
+<html>
+<head>
+<title></title>
+<script>
+
+  // Specifies the index of the item we are editing or -1 if adding new.
+  var editingIndex = -1;
+  // Whether we are currently editing the default item.
+  var editingDefault = false;
+  
+  var defaultViewer = 'http://sparql.captsolo.net/browser/browser.py?url=%s';
+  var defaultRDFaViewer = 'http://inspector.sindice.com/inspect?url=%s';
+  var defaultCheckboxState = 0; //default for namespace check is turned off!
+
+
+
+function main() {
+  document.title = "RDF Detective Options";
+
+/*
+  if (!storageEnabled) {
+    document.getElementById('save').disabled = true;
+    alert("local storage is disabled!");
+    return;
+  }*/
+  
+  //set RDF viewer
+  var rdfViewer;
+  if (window.localStorage.rdfViewer) {
+    rdfViewer = window.localStorage.rdfViewer;
+  } else {
+    rdfViewer = defaultViewer;
+    window.localStorage.rdfViewer = rdfViewer;
+  }
+  //insert the rdfViwer url into the box
+  var viewerbox = document.getElementById('urlText');
+  viewerbox.value=rdfViewer;
+  
+  //set RDFa viewer  
+  var rdfaViewer;
+  if (window.localStorage.rdfaViewer) {
+    rdfaViewer = window.localStorage.rdfaViewer;
+  } else {
+    rdfaViewer = defaultRDFaViewer;
+    window.localStorage.rdfaViewer = rdfaViewer;
+  }
+  //insert the rdfaViwer url into the box
+  var viewerbox_b = document.getElementById('urlRDFaText');
+  viewerbox_b.value=rdfaViewer;
+  
+  //set checkbox state  
+  var checkboxState;
+  if (window.localStorage.check_rdfa_types) {
+    checkboxState = window.localStorage.check_rdfa_types;
+  } else {
+    checkboxState = defaultCheckboxState;
+    window.localStorage.check_rdfa_types = checkboxState;
+  }
+  //insert the rdfaViwer url into the box
+  var checkbox = document.getElementById('namespace_checkbox');
+  if (checkboxState==1) checkbox.checked=true;
+
+}
+
+function reset() {
+  if (!confirm("confirm reset?")) {
+    return;
+  }
+  window.localStorage.rdfViewer = defaultViewer;
+  //delete window.localStorage.showPreviewPage;
+
+  // Reinititalize the page.
+  main();
+}
+
+function validateInput() {
+  document.getElementById('statusMsg').innerText = "";
+
+  var description = document.getElementById('descriptionText');
+  var url = document.getElementById('urlText');
+  var url_rdfa = document.getElementById('urlRDFaText');
+
+  var valid = description.value.length > 0 &&
+                url.value.length > 0 &&
+                url.value.indexOf("%s") > -1 &&
+                url_rdfa.value.length > 0 &&
+                url_rdfa.value.indexOf("%s") > -1;
+
+  document.getElementById('save').disabled = !valid;
+}
+
+//save choice
+function save() {
+  // Get the old list.
+  var url = document.getElementById('urlText').value;
+  var url_rdfa = document.getElementById('urlRDFaText').value;
+  var namespace_checkbox = document.getElementById('namespace_checkbox').checked;
+
+  window.localStorage.rdfViewer = url;
+  window.localStorage.rdfaViewer = url_rdfa;
+  if (namespace_checkbox==true)
+	window.localStorage.check_rdfa_types = 1;
+  else
+	window.localStorage.check_rdfa_types = 0;
+
+  // Reload the values from scratch.
+  main();
+}
+
+function init() {
+  main();
+}
+</script>
+</head>
+<body onload="init()">
+  <!-- main window start -->
+  <table border="0">
+  <tr>
+    <td colspan="2" valign="top" width="16">
+      <img src="rdf-icon-16.gif" />
+      <strong id="rss_subscription_options">Select the application(s) used to view metadata content:</strong>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1" style="text-align: left;">
+        RDF viewer:
+    </td>
+    <td colspan="1" style="text-align: right;">
+        <input type="text" id="urlText" style=" width: 700px; text-align: right"/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="1" style="text-align: left;">
+        RDFa viewer:
+    </td>
+    <td colspan="1" style="text-align: right;">
+        <input type="text" id="urlRDFaText" style=" width: 700px; text-align: right"/>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top" style="text-align: right; font-size: 80%;">
+        <div id="urlAssist" class="urlAssist">Insert %s where the "RDF URL" should be inserted. <b>Example:</b> <span style="color:#9900CC">http://www.w3.org/RDF/Validator/ARPServlet?URI=%s</span> (will validate selected rdf)</div>
+    </td>
+  </tr>
+   <tr>
+    <td colspan="2" valign="top" style="text-align: left;">
+        <div>&nbsp;</div>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" valign="top" style="text-align: left;">
+        <div>Enable experimental RDFa namespace detection (currently only for Facebook and Opengraph)<input id="namespace_checkbox" type="checkbox" name="option1"></div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top" style="text-align: right;">
+        <button type="button" id="save" onclick="save()">Save</button>    </td>
+        <button type="button" id="reset" onclick="reset()">Reset to default</button>    </td>
+  </tr>
+  </table>
+  <!-- main window end -->
+  
+</body>
+</html>

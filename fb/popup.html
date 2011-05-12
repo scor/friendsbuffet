@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <script type="text/javascript">
+      function init() {
+        var backgroundPage = chrome.extension.getBackgroundPage();
+        document.getElementById('container').innerHTML =
+            '<div id="triples" style="color: black; text-align: left; ' +
+            'background-color: #FFFF80; border: solid 4px orange; ' +
+            'border-radius: 15px; ' +
+            'font-size: 10pt;">' + backgroundPage.html + '</div>';
+      }
+    </script>  
+  </head>
+  <body onload="init();">score!
+    <div id="container"></container>
+  </body>
+</html>  

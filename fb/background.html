@@ -1,0 +1,13 @@
+<script type="text/javascript">
+  var html = '';
+  chrome.extension.onRequest.addListener(
+    function(request, sender, sendResponse) {
+      if (request.show == "icon") {
+        chrome.pageAction.show(sender.tab.id);
+        html = request.html;
+      } else {
+        chrome.pageAction.hide(sender.tab.id);        
+      }      
+      sendResponse({});
+  });        
+</script>

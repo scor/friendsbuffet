@@ -1,0 +1,96 @@
+<html>
+  <head>    
+    <style>
+      .wrapper {
+        width: 100%;
+        height: 100%;
+        display: box;        
+        box-orient: horizontal; 
+        box-pack: center;
+        box-align: center;
+      }
+      .wrapper > div:nth-child(1) { background : yellow; }      
+    </style>
+    <script type="text/javascript">
+
+    // Saves options to localStorage.
+    function saveOptions() {
+      popupRadio = document.getElementById('popup');
+      iframeRadio = document.getElementById('iframe');
+      window.localStorage.setItem('lookFeel', (popupRadio.checked? popupRadio.value : iframeRadio.value));
+      
+      // Update status to let user know options were saved.
+      var status = document.getElementById("status");
+      status.innerHTML = "Options Saved.";
+      setTimeout(function() {
+        status.innerHTML = "";
+      }, 750);
+    }
+
+    // Restores select box state to saved value from localStorage.
+    function restoreOptions() {
+      var lookFeel = window.localStorage.getItem('lookFeel');
+      if (!lookFeel) {
+        lookFeel = 'popup';
+        window.localStorage.setItem('lookFeel', lookFeel);
+      }
+      popupRadio = document.getElementById('popup');
+      iframeRadio = document.getElementById('iframe');        
+      if (lookFeel === 'popup') {
+        popupRadio.checked = true;
+        iframeRadio.checked = false;                    
+      } else if (lookFeel === 'iframe') {
+        popupRadio.checked = false;
+        iframeRadio.checked = true;      
+      }      
+    }
+
+    </script>   
+    <style>
+      BODY {
+        font-family: sans-serif;
+      }
+      H1 {
+        color: darkblue;
+        display: inline;
+        font-size: 1.2em;
+      }
+      H2 {
+        color: blue;
+        font-size: 1.1em;        
+      }      
+      LABEL {
+        font-weight: bold;
+      }
+      STRONG {
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+      IMG {
+        vertical-align: middle;
+      }
+    </style> 
+  </head>
+
+  <body onload="restoreOptions()">
+    <div class="wrapper">
+      <div id="status"></div>
+      <script type="text/javascript">
+        document.write(
+            '<img style="height:32px;" src="icon.png"/><h1>' + chrome.i18n.getMessage('options') + '</h1>' +
+            '<fieldset id="lookFeel">' +
+              '<h2>' + chrome.i18n.getMessage('lookFeel') + '</h2>' +
+              '<table><tbody><tr><td><input type="radio" name="lookFeel" value="popup" id="popup" />' +
+      			  '<label for="popup">' + chrome.i18n.getMessage('popup') + '</label>' +
+      			  '<br/><img style="width:300px;" src="screenshot1.png"/><br/>' +
+      			  '</td></tr><tr><td><input type="radio" name="lookFeel" value="iframe" id="iframe" />' +
+      			  '<label for="folder">' + chrome.i18n.getMessage('iframe') + '</label>' +
+      			  '<br/><img style="width:300px;" src="screenshot2.png"/>' +
+      			  '</td></tr></tbody></table>' +
+            '</fieldset>' +
+            '<p><button onclick="saveOptions()"><img src="check.png" style="height:22px;"/>&nbsp;<strong>' +
+            chrome.i18n.getMessage('save') + '</strong></button></p>');			  
+      </script>    
+    </div>
+  </body>
+</html>

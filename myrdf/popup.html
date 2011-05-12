@@ -1,0 +1,161 @@
+<html>
+<head>
+<style>
+  body {
+    overflow-x: hidden;
+  }
+
+  .heading {
+    font-family: Helvetica, Arial;
+    font-size: small;
+    font-weight: bold;
+    margin-left: 2px;
+  }
+
+  .rdfList {
+    font-family: Helvetica, Arial;
+    font-size: small;
+    vertical-align: bottom;
+  }
+</style>
+<script>
+  //metadata types
+  const RDF = 0;
+  const RDFa = 1;
+  const RDFa_fb = 2;
+  const RDFa_og = 3;
+  
+function rdfLink(url) {
+  var rdf_link = document.createElement('a');
+  rdf_link.href = url;
+  rdf_link.addEventListener("click", onClick);
+  return rdf_link;
+}
+
+function rdfaLink(url) {
+  var rdf_link = document.createElement('a');
+  rdf_link.href = url;
+  rdf_link.addEventListener("click", onClickRdfa);
+  return rdf_link;
+}
+
+
+function main() {
+  chrome.tabs.getSelected(null, function(tab) {
+    var rdfList = chrome.extension.getBackgroundPage().rdfsPerTab[tab.id];
+    if (rdfList.length == 1)
+	  if (rdfList[0].type == "rdf")
+		viewRdf(rdfList[0].href);
+	  else { viewRdfa(rdfList[0].href); }
+    else {
+      var content = document.getElementById('content');
+      var heading = document.getElementById('heading');
+      var d = document.getElementById('heading');
+      content.removeChild(d);
+
+      var rdf_list = document.createElement('table');
+      for (var i = 0; i < rdfList.length; ++i) {
+        var img_link = rdfLink(rdfList[i].href);
+        var img = document.createElement('img');
+        img.src = "rdf-icon-16.gif";
+		if (rdfList[i].type> 0) { 
+			img_link = rdfaLink(rdfList[i].href);
+			switch (rdfList[i].type)
+			{
+			case 1:
+			 img.src = "rdfa-icon-16.gif";
+			 break;
+			case 2:
+			 img.src = "fb-icon-16.gif";
+			 break;
+			case 3:
+			 img.src = "og-icon-16.gif";
+			 break;
+			default:
+			 img.src = "rdfa-icon-16.gif";
+			 break;
+			}
+		}
+        img_link.appendChild(img);
+
+        var text_link = rdfLink(rdfList[i].href);
+		if (rdfList[i].type> 0) text_link = rdfaLink(rdfList[i].href);
+//		alert('|'+rdfList[i].title+'|');
+		if (rdfList[i].title.length>0)
+			text_link.appendChild(document.createTextNode(rdfList[i].title));
+		else
+			text_link.appendChild(document.createTextNode("Undefined"));
+
+        var tr = document.createElement('tr');
+        tr.className = "rdfList";
+        var td = document.createElement('td');
+		td.align = "center";
+        td.width = "16";
+        td.appendChild(img_link);
+        var td2 = document.createElement('td');
+        td2.appendChild(text_link);
+        tr.appendChild(td);
+        tr.appendChild(td2);
+        rdf_list.appendChild(tr);
+      }
+        content.appendChild(rdf_list);
+    }
+  });
+}
+
+function onClick(event) {
+  var a = event.currentTarget;
+  viewRdf(a.href);
+}
+
+function onClickRdfa(event) {
+  var a = event.currentTarget;
+  viewRdfa(a.href);
+}
+
+
+function viewRdf(rdf_url) {
+  // See if we need to skip the preview page and subscribe directly.
+  var url = "";
+  //check if some viewer has been selected by the user
+  rdfViewer= window.localStorage.rdfViewer;
+  if (!rdfViewer)
+    rdfViewer='http://sparql.captsolo.net/browser/browser.py?url=%s';
+  if (rdfViewer=='' || rdfViewer=='%s' || rdfViewer==' ')
+        url = rdf_url;
+    else
+        url= rdfViewer.replace("%s", escape(rdf_url));
+        
+//  url = rdf_url; //no external rdf browser
+//  url = "http://sparql.captsolo.net/browser/browser.py?url="+rdf_url //custom browser via rest interface
+  chrome.tabs.create({ url: url });
+  window.close();
+}
+
+function viewRdfa(rdf_url) {
+  // See if we need to skip the preview page and subscribe directly.
+  var url = "";
+  //check if some viewer has been selected by the user
+  rdfaViewer= window.localStorage.rdfaViewer;
+  if (!rdfaViewer)
+    rdfaViewer='http://inspector.sindice.com/inspect?url=%s';
+  if (rdfaViewer=='' || rdfaViewer=='%s' || rdfaViewer==' ')
+        url = rdf_url;
+    else
+        url= rdfaViewer.replace("%s", escape(rdf_url));
+        
+//  url = rdf_url; //no external rdf browser
+//  url = "http://sparql.captsolo.net/browser/browser.py?url="+rdf_url //custom browser via rest interface
+  chrome.tabs.create({ url: url });
+  window.close();
+}
+
+
+</script>
+</head>
+<body onload="javascript:main()">
+  <div id="content">
+   <span id="heading" class="heading">Processing...</span>
+  </div>
+</body>
+</html>

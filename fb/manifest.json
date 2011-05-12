@@ -1,0 +1,21 @@
+{
+   "background_page": "background.html",
+   "content_scripts": [ {
+      "js": [ "amazon.js", "jquery.js", "linkeddataapi.js", "content_script.js" ],
+      "matches": [ "http://*/*", "https://*/*", "file://*/*" ]
+   } ],
+   "default_locale": "en_US",
+   "description": "my2rdf",
+   "icons": {
+      "128": "icon.png"
+   },
+   "name": "FB",
+   "options_page": "options.html",
+   "page_action": {
+      "default_icon": "icon.png",
+      "default_name": "Creative Commons License Highlighter",
+      "popup": "popup.html"
+   },
+   "permissions": [ "tabs", "http://*/*", "https://*/*" ],
+   "version": "0.0.7"
+}

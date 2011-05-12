@@ -1,0 +1,21 @@
+{
+   "background_page": "background.html",
+   "content_scripts": [ {
+      "js": [ "rdf_detector.js" ],
+      "matches": [ "http://*/*", "https://*/*" ]
+   } ],
+   "description": "some description",
+   "icons": {
+      "128": "rdf-chrome-128.png",
+      "48": "rdf-chrome-48.png"
+   },
+   "name": "myRDF",
+   "options_page": "options.html",
+   "page_action": {
+      "default_icon": "rdf-icon-16.gif",
+      "default_title": "RDF annotations",
+      "popup": "popup.html"
+   },
+   "permissions": [ "tabs", "http://*/*", "https://*/*" ],
+   "version": "1.3"
+}

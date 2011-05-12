@@ -1,0 +1,58 @@
+<html>
+<head>
+<script>
+  //metadata types
+  const RDF = 0;
+  const RDFa = 1;
+  const RDFa_fb = 2;
+  const RDFa_og = 3;
+  //data on different tabs
+  var rdfsPerTab = {};
+  //options
+  var viewerPrefix ="view-source:";
+
+  chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    if (request.msg == "rdfDetected") {
+      rdfsPerTab[sender.tab.id] = request.rdfs;
+      chrome.pageAction.setTitle(
+        { tabId: sender.tab.id,
+          title: "Click to view embeded RDF..."});
+		  
+//	  if ((request.rdfs.length == 1) && (request.rdfs[0].type== 'rdfa')) chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdfa-icon-16.gif'});
+//	  if ((request.rdfs.length == 1) && (request.rdfs[0].type== 1)) chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdfa-icon-16.gif'});
+	  
+	  if (request.rdfs.length == 1) 
+	  switch (request.rdfs[0].type)
+	  {
+		case 0:
+			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdf-icon-16.gif'});
+			break;
+		case 1:
+			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdfa-icon-16.gif'});
+			break;
+		case 2:
+			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'fb-icon-16.gif'});
+			break;
+		case 3:
+			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'og-icon-25.gif'});
+			break;
+		default:
+			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdf-icon-16.gif'});
+			break;
+	  }
+	  
+      chrome.pageAction.show(sender.tab.id);
+    }
+	if (request.msg == "check_opts") {
+		//alert(window.localStorage.check_rdfa_types);
+		//sendResponse({check_rdfa_types: "2" });
+		sendResponse({check_rdfa_types: window.localStorage.check_rdfa_types});
+	}
+  });
+
+  chrome.tabs.onRemoved.addListener(function(tabId) {
+    delete rdfsPerTab[tabId];
+  });
+</script>
+</head>
+</html>
