@@ -17,8 +17,6 @@ function callback (options) {
 
 
   candidates = find_people(store);
-  //  console.log(people);
-
 
   var people = [];
   jQuery.each(candidates, function (i, uri) {
@@ -56,7 +54,7 @@ function callback (options) {
 
     }
   });
-  console.log(people);
+//  console.log(people);
 
 
   //send message to render the icon (or not)

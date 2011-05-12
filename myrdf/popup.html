@@ -43,11 +43,8 @@ function rdfaLink(url) {
 function main() {
   chrome.tabs.getSelected(null, function(tab) {
     var rdfList = chrome.extension.getBackgroundPage().rdfsPerTab[tab.id];
-    if (rdfList.length == 1)
-	  if (rdfList[0].type == "rdf")
-		viewRdf(rdfList[0].href);
-	  else { viewRdfa(rdfList[0].href); }
-    else {
+    if (rdfList.length > 0) {
+//console.log(rdfList);
       var content = document.getElementById('content');
       var heading = document.getElementById('heading');
       var d = document.getElementById('heading');

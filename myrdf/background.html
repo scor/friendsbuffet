@@ -12,31 +12,14 @@
   var viewerPrefix ="view-source:";
 
   chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+//console.log(request);
     if (request.msg == "rdfDetected") {
       rdfsPerTab[sender.tab.id] = request.rdfs;
       chrome.pageAction.setTitle(
         { tabId: sender.tab.id,
           title: "Click to view people embedded in this page..."});
 
-	  if (request.rdfs.length == 1)
-	  switch (request.rdfs[0].type)
-	  {
-		case 0:
-			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdf-icon-16.gif'});
-			break;
-		case 1:
-			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdfa-icon-16.gif'});
-			break;
-		case 2:
-			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'fb-icon-16.gif'});
-			break;
-		case 3:
-			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'og-icon-25.gif'});
-			break;
-		default:
-			chrome.pageAction.setIcon({tabId:sender.tab.id,path:'rdf-icon-16.gif'});
-			break;
-	  }
+      chrome.pageAction.setIcon({tabId:sender.tab.id,path:'og-icon-25.gif'});
 
       chrome.pageAction.show(sender.tab.id);
     }
