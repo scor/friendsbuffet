@@ -54,34 +54,13 @@ function main() {
       for (var i = 0; i < rdfList.length; ++i) {
         var img_link = rdfLink(rdfList[i].href);
         var img = document.createElement('img');
-        img.src = "rdf-icon-16.gif";
-		if (rdfList[i].type> 0) {
-			img_link = rdfaLink(rdfList[i].href);
-			switch (rdfList[i].type)
-			{
-			case 1:
-			 img.src = "rdfa-icon-16.gif";
-			 break;
-			case 2:
-			 img.src = "fb-icon-16.gif";
-			 break;
-			case 3:
-			 img.src = "og-icon-16.gif";
-			 break;
-			default:
-			 img.src = "rdfa-icon-16.gif";
-			 break;
-			}
-		}
+        img.src = rdfList[i].photo;
+        img.width = 50;
+		img_link = rdfaLink(rdfList[i].href);
         img_link.appendChild(img);
 
-        var text_link = rdfLink(rdfList[i].href);
-		if (rdfList[i].type> 0) text_link = rdfaLink(rdfList[i].href);
-//		alert('|'+rdfList[i].title+'|');
-		if (rdfList[i].title.length>0)
-			text_link.appendChild(document.createTextNode(rdfList[i].title));
-		else
-			text_link.appendChild(document.createTextNode("Undefined"));
+        var p_name = document.createElement('p')
+		p_name.appendChild(document.createTextNode(rdfList[i].name));
 
         var tr = document.createElement('tr');
         tr.className = "rdfList";
@@ -90,12 +69,12 @@ function main() {
         td.width = "16";
         td.appendChild(img_link);
         var td2 = document.createElement('td');
-        td2.appendChild(text_link);
+        td2.appendChild(p_name);
         tr.appendChild(td);
         tr.appendChild(td2);
         rdf_list.appendChild(tr);
       }
-        content.appendChild(rdf_list);
+      content.appendChild(rdf_list);
     }
   });
 }

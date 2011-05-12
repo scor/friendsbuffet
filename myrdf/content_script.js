@@ -49,7 +49,7 @@ function callback (options) {
       if (photo === undefined) {
         photo = 'https://ssl.gstatic.com/s2/profiles/images/silhouette200.png';
       }
-      people.push({"href": uri, "uri": uri, "name": name, "photo": photo, "type": 0});
+      people.push({"href": uri, "uri": uri, "name": name.replace(/"/g, ''), "photo": photo, "type": 0, "title": 'bla'});
       console.log('Adding person ' + uri);
 
     }
